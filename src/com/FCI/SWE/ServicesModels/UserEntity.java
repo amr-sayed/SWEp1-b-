@@ -1,7 +1,9 @@
 package com.FCI.SWE.ServicesModels;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Vector;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -140,6 +142,36 @@ public class UserEntity {
 		return null;
 	}
 
+	
+	public static Boolean confirmFrind (String email ,String femail) {
+		System.out.println(email +" "+femail+" enterFunc");
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("FriendShip");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+
+		//Entity Friend = new Entity("FriendShip", list.size() + 1);
+		for (Entity Friend : pq.asIterable()) {
+			System.out.println(Friend.getProperty("cuurent"));
+				if ( Friend.getProperty("cuurent").toString().equals(femail)&&Friend.getProperty("reciver").toString().equals(email) && Friend.getProperty("bool").toString().equals("false") ){
+					System.out.println( " entercond");
+					Friend.setProperty("bool", true);
+					datastore.put(Friend);
+					
+				}
+		}
+		 
+//		Friend.setProperty("cuurent", email);
+//		Friend.setProperty("reciver", femail);
+//		Friend.setProperty("bool", true);
+//		datastore.put(Friend);
+
+		return true;
+
+	}
+
+
 	public static Boolean saveFriendShip(String emailOfCurrentUser, String emailOfReciveUser) {
 		DatastoreService datastore = DatastoreServiceFactory
 				.getDatastoreService();
@@ -158,17 +190,33 @@ public class UserEntity {
 
 	}
 	
-	public static Boolean confirmFrind (String name ,String fname) {
-		 System.out.println("we want to confirm this two in data base: "+name+" "+fname);
-		 /**mas3ood
-		    confirm this in data base
-		 */ 
-		 
-		return true;
+
+	@SuppressWarnings("null")
+	public static ArrayList<String>  getFrindRequsts (String email ) {
+		ArrayList<String> friendsEmail =new ArrayList<>() ;
+		System.out.println("*********Ener***********\nCurrnetUser "+ email);
+		DatastoreService datastore = DatastoreServiceFactory
+				.getDatastoreService();
+		Query gaeQuery = new Query("FriendShip");
+		PreparedQuery pq = datastore.prepare(gaeQuery);
+		//List<Entity> list = pq.asList(FetchOptions.Builder.withDefaults());
+		for (Entity Friend : pq.asIterable()) {
+			
+			
+			System.out.println(Friend.getProperty("cuurent")+"####");
+		
+if (Friend.getProperty("reciver").toString().equals(email) && Friend.getProperty("bool").toString().equals("false") ){
+	
+	System.out.println("curr  "+Friend.getProperty("cuurent"));
+	friendsEmail.add(Friend.getProperty("cuurent").toString());
+					//System.out.println("curr  "+Friend.getProperty("cuurent"));
+					
+				}
+		//System.out.println("*********"+friendsEmail+"r***********");
+
+	}
+		return friendsEmail;
 
 	}
 
-	
-	
-	
-}
+	}

@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -27,6 +28,7 @@ import org.json.simple.parser.ParseException;
 
 import com.FCI.SWE.Models.User;
 import com.FCI.SWE.ServicesModels.UserEntity;
+import com.google.apphosting.utils.config.ClientDeployYamlMaker.Request;
 
 /**
  * This class contains REST services, also contains action function for web
@@ -126,11 +128,34 @@ public String frindConfirmService(@FormParam("fname") String fname) {
 	System.out.println("Servece rest frindConfirmService");
 	JSONObject object = new JSONObject();
 	String urlParameters = "Status=" + "Failed" ;
-	UserEntity.confirmFrind(User.getCurrentActiveUser().getName(), fname);
+	UserEntity.confirmFrind(User.getCurrentActiveUser().getEmail(), fname);
 	
 	return urlParameters ;
-
 }
+
+
+
+static ArrayList<String> requsts = new ArrayList<>();
+
+@POST
+@Path("/seeFriendRequsts")
+public String seeFriendRequsts( ) {
+	System.out.println("seeFriendRequsts");
+	requsts=UserEntity .getFrindRequsts(User.getCurrentActiveUser().getEmail());
+	System.out.println("req  "+requsts);
+	JSONObject object = new JSONObject();
+	object.put("Status", "OK");
+	return object.toString();
+}
+
+public static void getList()
+{
+	
+    
+  } 
+
+
+
 
 
 	

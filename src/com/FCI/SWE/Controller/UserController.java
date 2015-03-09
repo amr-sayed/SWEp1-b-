@@ -209,11 +209,12 @@ public class UserController {
 		return null;
 	}
 	@GET
-	@Path("/FrindRequsts/")
+	@Path("/FriendRequsts/")
 	public Response frindRequsts() {
 		System.out.println("User Controller FrindRequsts");
-		return Response.ok(new Viewable("/jsp/frindRequsts")).build();
+		return Response.ok(new Viewable("/jsp/FriendRequests")).build();
 	}
+	
 	@POST
 	@Path("/acceptRqust")
 	@Produces(MediaType.TEXT_PLAIN)
@@ -244,8 +245,38 @@ public class UserController {
 		 
 		return "break";
 	}
+	
 
 
+	@Path("/responseSeeFriendRequsts")
+	@Produces(MediaType.TEXT_PLAIN)
+	public String responseSeeFriendRequsts( ) {
+System.out.println("responseSeeFriendRequsts");
+		String serviceUrl = "http://localhost:8888//rest/seeFriendRequsts";
+		String urlParameters = "";
+			//	"uname=" + uname + "&email=" + email+ "&password=" + pass;
+		String retJson = Connection.connect(serviceUrl, urlParameters, "POST",
+				"application/x-www-form-urlencoded;charset=UTF-8");
+		JSONParser parser = new JSONParser();
+		Object obj;
+		try {
+			 //System.out.println("retJson  "+retJson);
+			obj = parser.parse(retJson);
+			JSONObject object = (JSONObject) obj;
+			if (object.get("Status").equals("OK"))
+				return "See Successfully";
 
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		/*
+		 * UserEntity user = new UserEntity(uname, email, pass);
+		 * user.saveUser(); return uname;
+		 */
+		return "bvbvvb";
+		//seeFriendRequsts
+	}
 
 }

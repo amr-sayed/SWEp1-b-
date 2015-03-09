@@ -13,6 +13,8 @@
 <a href="/social/join/">Join Group</a> <br>
 <a href="/social/logout/">Logout</a> <br>
 
+<p><a href="/social/FriendRequsts">FriendRequsts</a></p>
+
 <form action ="/social/addFriend" method="post">
 <input type="submit" value="Add Friend" />
 <input type="text" name="email" />
